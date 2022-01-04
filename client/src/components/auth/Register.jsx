@@ -22,7 +22,7 @@ const Register = ({ setAlert }) => {
     if (password !== password2) {
       setAlert('Passwords do not match', 'danger', 4000);
     }
-    console.log('Signed up');
+    setAlert('Signed up successfully!', 'success', 4000);
   };
   return (
     <>
@@ -86,7 +86,10 @@ const Register = ({ setAlert }) => {
 
 Register.propTypes = {
   setAlert: PropTypes.func.isRequired,
-  removeAlert: PropTypes.func.isRequired,
+  // removeAlert: PropTypes.func.isRequired,
 };
 
+// Connect to Redux
+// takes in: (state, { actions })(current component to map the actions to)
 export default connect(null, { setAlert })(Register);
+// Result: setAlert is available to Register component via props.setAlert
