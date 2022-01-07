@@ -1,10 +1,11 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
+import { register } from '../../actions/auth';
 import { setAlert } from '../../actions/alert';
 import PropTypes from 'prop-types';
 
-const Register = ({ setAlert }) => {
+const Register = ({ setAlert, register, isAuthenticated }) => {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -22,8 +23,13 @@ const Register = ({ setAlert }) => {
     if (password !== password2) {
       setAlert('Passwords do not match', 'danger', 4000);
     }
-    setAlert('Signed up successfully!', 'success', 4000);
+    register({ name, email, password });
   };
+
+  if (isAuthenticated) {
+    return <Redirect to='/dashboard' />;
+  }
+
   return (
     <>
       <p className='lead'>
@@ -86,10 +92,17 @@ const Register = ({ setAlert }) => {
 
 Register.propTypes = {
   setAlert: PropTypes.func.isRequired,
+  register: PropTypes.func.isRequired,
+  isAuthenticated: PropTypes.bool,
   // removeAlert: PropTypes.func.isRequired,
 };
 
+// Access isAuthenticated from auth state
+const mapStateToProps = (state) => ({
+  isAuthenticated: state.auth.isAuthenticated,
+});
+
 // Connect to Redux
-// takes in: (state, { actions })(current component to map the actions to)
-export default connect(null, { setAlert })(Register);
-// Result: setAlert is available to Register component via props.setAlert
+// (state, { actions })(current component to map actions to)
+export default connect(mapStateToProps, { setAlert, register })(Register);
+// Result: { actions } are available to Register component via props.setAlert

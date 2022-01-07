@@ -1,10 +1,10 @@
 import { SET_ALERT, REMOVE_ALERT } from './types';
 import { v4 } from 'uuid';
 
+// dispatch function available from Thunk Middleware
 export const setAlert =
   (msg, alertType, timeout = 5000) =>
   (dispatch) => {
-    // dispatch function available from Thunk Middleware
     const id = v4();
     // Dispatch action to reducer
     dispatch({
